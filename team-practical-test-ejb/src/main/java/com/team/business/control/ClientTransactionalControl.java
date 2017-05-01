@@ -5,9 +5,11 @@ package com.team.business.control;
 
 import java.util.List;
 
+import javax.enterprise.inject.Model;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 
 import com.team.business.entity.Client;
 import com.team.business.exception.TeamTransactionException;
@@ -16,10 +18,11 @@ import com.team.business.exception.TeamTransactionException;
  * @author Rodrigo
  *
  */
+@Model
 public class ClientTransactionalControl {
 	
 	/** The JPA entity manager for persistence operations **/
-	@PersistenceContext
+	@PersistenceContext(unitName="team-pu")
 	private EntityManager em;
 
 	/**
@@ -44,16 +47,18 @@ public class ClientTransactionalControl {
 	 * @return
 	 * @throws TeamTransactionException
 	 */
+	@SuppressWarnings("unchecked")
 	public Client findClientByCLientId(final Integer clientId) throws TeamTransactionException{
 		try {
-			return (Client) em.createNamedQuery("Client.findByClientId").setParameter("clientId", clientId).getSingleResult();
+			List<Client> clientList =  em.createNamedQuery("Client.findByClientId").setParameter("clientId", clientId).getResultList();
+			return (clientList.size()>0 ? clientList.get(0) : null);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new TeamTransactionException("Error fetching the client with client id: " + clientId, e);
 		} catch (ClassCastException e){
 			e.printStackTrace();
 			throw new TeamTransactionException("Error fetching the client with client id: " + clientId, e);
-		}
+		} 
 		
 	}
 	
@@ -63,9 +68,30 @@ public class ClientTransactionalControl {
 	 * @return
 	 * @throws TeamTransactionException
 	 */
+	@Transactional
 	public Client saveClient(Client client)  throws TeamTransactionException{
 		try {
 			 em.persist(client);
+			 return client;
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new TeamTransactionException("Error fetching the client with client id: " + client.getClientId(), e);
+		} catch (ClassCastException e){
+			e.printStackTrace();
+			throw new TeamTransactionException("Error fetching the client with client id: " + client.getClientId(), e);
+		}
+	}
+	
+	/**
+	 * Updates an existing client given the entity with his Unique id.
+	 * @param client a client with id not null.
+	 * @return
+	 * @throws TeamTransactionException
+	 */
+	@Transactional
+	public Client updateClient(Client client)  throws TeamTransactionException{
+		try {
+			 em.merge(client);
 			 return client;
 		} catch (PersistenceException e) {
 			e.printStackTrace();

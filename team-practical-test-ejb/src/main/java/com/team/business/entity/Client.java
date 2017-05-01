@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * @author Rodrigo
@@ -26,6 +27,7 @@ import javax.persistence.NamedQuery;
     + " FROM Client c "
     + " ORDER BY c.name ")
 })
+@Table(name="client")
 public class Client {
 	
 	/** The auto generated id **/

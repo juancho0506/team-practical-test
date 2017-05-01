@@ -105,7 +105,7 @@ public class ClientTransactionalBoundaryLocalTest {
 	}
 
 	@Test
-	public void testPersistClient() throws TeamTransactionException {
+	public void testPersistNewClient() throws TeamTransactionException {
 		//Test data:
 		Client newClient = new Client();
 		newClient.setClientId(10002);
@@ -114,11 +114,36 @@ public class ClientTransactionalBoundaryLocalTest {
 		newClient.setAddress("test address");
 		
 		//change control method
+		//Client is new so it has't to return any object.
+		when(control.findClientByCLientId(Mockito.anyInt())).thenReturn(null);
 		when(control.saveClient(newClient)).thenReturn(this.addNewClientToList(newClient));
 		//Test method..
 		final Client client = boundary.saveClient(newClient);
 		assertThat(client).isNotNull();
 		assertThat(client.getClientId()).isEqualTo(newClient.getClientId());
+		
+		this.testFetchAllClients();
+		
+	}
+	
+	@Test
+	public void testPersistExistingClient() throws TeamTransactionException {
+		//Test data:
+		Client existing = new Client();
+		existing.setId(1L);
+		existing.setClientId(10002);
+		existing.setName("Edited Client name");
+		existing.setAge(30);
+		existing.setAddress("test address edited");
+		
+		//change control method
+		//Client already exists, so it has't to return the existing object.
+		when(control.findClientByCLientId(Mockito.anyInt())).thenReturn(existing);
+		when(control.updateClient(existing)).thenReturn(this.updateClientInList(existing));
+		//Test method..
+		final Client client = boundary.saveClient(existing);
+		assertThat(client).isNotNull();
+		assertThat(client.getClientId()).isEqualTo(existing.getClientId());
 		
 		this.testFetchAllClients();
 		
@@ -146,5 +171,18 @@ public class ClientTransactionalBoundaryLocalTest {
 		clientPersistenceDummyList.add(newClient);
 		return newClient;
 	}
-
+	
+	/**
+	 * private method to add a new client to the list.
+	 * @param newClient
+	 * @return
+	 */
+	private Client updateClientInList(final Client existing){
+		Client previous = this.findClientByClientId(existing.getClientId());
+		previous.setClientId(existing.getClientId());
+		previous.setName(existing.getName());
+		previous.setAge(existing.getAge());
+		previous.setAddress(existing.getAddress());
+		return previous;
+	}
 }

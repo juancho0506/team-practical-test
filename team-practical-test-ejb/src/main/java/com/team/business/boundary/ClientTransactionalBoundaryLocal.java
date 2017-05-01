@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import com.team.business.control.ClientTransactionalControl;
 import com.team.business.entity.Client;
@@ -44,8 +43,12 @@ public class ClientTransactionalBoundaryLocal implements IClientTransactionalBou
 	}
 
 	@Override
-	@Transactional
 	public Client saveClient(Client client) throws TeamTransactionException {
+		final Client previous = this.findClientByClientId(client.getClientId());
+		if (previous != null) {
+			client.setId(previous.getId());
+			return control.updateClient(client);
+		}
 		return control.saveClient(client);
 	}
 

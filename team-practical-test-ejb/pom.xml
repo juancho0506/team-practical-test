@@ -22,6 +22,10 @@
 	<!-- EJB -->
 	<javaee.api.version>7.0</javaee.api.version>
 	
+	<!-- EJB3 Wildfly -->
+    <wildlfy.ejb.version>10.1.0.Final</wildlfy.ejb.version>
+	
+	
   </properties>
   
   <dependencies>
@@ -33,17 +37,25 @@
 		<scope>provided</scope>
 	</dependency>
 	
+	<dependency>
+		<groupId>org.wildfly</groupId>
+		<artifactId>wildfly-ejb3</artifactId>
+		<version>${wildlfy.ejb.version}</version>
+	</dependency>
+	
 	<!-- Hibernate -->
 	<dependency>
 		<groupId>org.hibernate</groupId>
 		<artifactId>hibernate-entitymanager</artifactId>
 		<version>${hibernate.version}</version>
+		<scope>provided</scope>
 	</dependency>
 	<!--  to enable Hibernate to use its proxy model, we need javassist as well -->
 	<dependency>
 	   <groupId>org.javassist</groupId>
 	   <artifactId>javassist</artifactId>
 	   <version>3.18.0-GA</version>
+	   <scope>provided</scope>
 	</dependency>
 	<!-- for basic datasource -->
 	<dependency>
@@ -83,6 +95,15 @@
   <build>
 		<finalName>team-practical-test-ejb</finalName>
 		<plugins>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <version>3.1</version>
+			    <configuration>
+			        <source>${java.version}</source>
+			        <target>${java.version}</target>
+			    </configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ejb-plugin</artifactId>
