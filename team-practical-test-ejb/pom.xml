@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.team</groupId>
+  
+  <parent>
+	<artifactId>team-practical-test-main</artifactId>
+	<groupId>com.team</groupId>
+	<version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
   <artifactId>team-practical-test-ejb</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>ejb</packaging>
   
-  <properties>
- 	<!-- Generic properties -->
-	<java.version>1.8</java.version>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	
+  <properties>	
 	<!-- Hibernate / JPA -->
 	<hibernate.version>4.2.1.Final</hibernate.version>
 	
@@ -21,18 +21,6 @@
 	
 	<!-- EJB -->
 	<javaee.api.version>7.0</javaee.api.version>
-	<!-- EJB3 Wildfly -->
-	<wildlfy.ejb.version>10.1.0.Final</wildlfy.ejb.version>
-	
-
-	<!-- Logging -->
-	<logback.version>1.0.13</logback.version>
-	<slf4j.version>1.7.5</slf4j.version>
-
-	<!-- Test -->
-	<junit.version>4.11</junit.version>
-	<assertj.core.version>3.6.2</assertj.core.version>
-	<mockito.all.version>1.10.19</mockito.all.version>
 	
   </properties>
   
@@ -43,13 +31,6 @@
 		<artifactId>javaee-api</artifactId>
 		<version>${javaee.api.version}</version>
 		<scope>provided</scope>
-	</dependency>
-	
-	<!-- EJB3 Wildfly -->
-	<dependency>
-		<groupId>org.wildfly</groupId>
-		<artifactId>wildfly-ejb3</artifactId>
-		<version>${wildlfy.ejb.version}</version>
 	</dependency>
 	
 	<!-- Hibernate -->

@@ -2,14 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.team</groupId>
-  <artifactId>team-practical-test-ear</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>ear</packaging>
   
-  <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-   </properties>
+  <parent>
+	<artifactId>team-practical-test-main</artifactId>
+	<groupId>com.team</groupId>
+	<version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>team-practical-test-ear</artifactId>
+  <packaging>ear</packaging>
   
   <dependencies>
   	<dependency>
@@ -17,6 +18,12 @@
   		<artifactId>team-practical-test-ejb</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   		<type>ejb</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.team</groupId>
+  		<artifactId>team-practical-test-web</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<type>war</type>
   	</dependency>
   </dependencies>
   
@@ -38,6 +45,11 @@
                             <artifactId>team-practical-test-ejb</artifactId>
                             <bundleFileName>team-practical-test-ejb.jar</bundleFileName>
         				</ejbModule>
+        				<webModule>
+        					<groupId>com.team</groupId>
+                            <artifactId>team-practical-test-web</artifactId>
+                            <bundleFileName>team-practical-test-web.war</bundleFileName>
+        				</webModule>
         			</modules>
         		</configuration>
         	</plugin>
