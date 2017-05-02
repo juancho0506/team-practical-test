@@ -3,34 +3,39 @@
  */
 package com.team.presentation.rest;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.team.business.control.ClientTransactionalControl;
 import com.team.business.entity.Client;
+import com.team.business.exception.TeamTransactionException;
 
 /**
  * @author Rodrigo
  *
  */
-@Path("/clients")
+@Path("/v1")
 public class RestClientService {
+	
+	/** The Client Control **/
+	//TODO: change this to fix the depedency injection problem with jersey.
+	private ClientTransactionalControl clientService = new ClientTransactionalControl();
 
 	@GET
-	@Path("/list")
+	@Path("/clients")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Client getTrackInJSON() {
+	public List<Client>  listAllClients() {
 
-		//Dummy client
-		Client dummyClient = new Client();
-		dummyClient.setId(1L);
-		dummyClient.setClientId(10000);
-		dummyClient.setName("Client name dummy");
-		dummyClient.setAge(18);
-		dummyClient.setAddress("Dummy address");
-
-		return dummyClient;
+		try {
+			return clientService.fetchAllClients();
+		} catch (TeamTransactionException e) {
+			e.printStackTrace();
+			return null;
+		}
 
 	}
 

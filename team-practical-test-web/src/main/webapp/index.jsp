@@ -7,20 +7,21 @@
 		<meta charset="utf-8">
 		<title>Team Practical Test Client Form</title>
 		
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		
 		<!-- Bootstrap imports -->
 		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		
 		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 		
 		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		
-		<!-- JQuery -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<!-- Handlebars -->
-		<script src="<c:url value="/resources/js/external/handlebars-v4.0.2.js" />"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.7/handlebars.js"></script>
 	</head>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 	      <div class="container">
@@ -44,14 +45,14 @@
     	<br>
     	<c:if test="${message ne null }">
 	    	<div class="alert alert-warning">
-			  <strong>Success!</strong> Indicates a successful or positive action.
+			  <strong> ${message} </strong>
 			</div>
 		</c:if>
 	    <div id="mainContainer" class="container">
 	    	
 	    		<h1>Team International Practice Test by Juan Rodrigo Torres Escobar</h1>
 				<p class="lead">Client form. Please fill all the required fields to create a new client.</p>
-				<form id="clientForm" method="post" action="ClientServlet">
+				<form id="clientForm" method="post" action="client">
 				  <div class="form-group">
 				    <input id="clientId" type="text" class="form-control" placeholder="ID">
 				  </div>
@@ -97,7 +98,9 @@
 	<!-- Javascript del servicio AJAX -->
 	<script src="<c:url value="/resources/js/main.js" />"></script>
 	<script type="text/javascript">
+		var ctx = '${ctx}'
 		$(document).ready(function() {
+			console.log("enters document ready");
 			renderTemplate(ctx);
 		});
 	</script>

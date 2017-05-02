@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.Path;
 
 import com.team.business.control.ClientTransactionalControl;
 import com.team.business.entity.Client;
@@ -15,6 +16,7 @@ import com.team.business.exception.TeamTransactionException;
  */
 @Stateless
 @LocalBean
+@Path("stateless-bean")
 public class ClientTransactionalBoundaryLocal implements IClientTransactionalBoundaryLocal {
 	
 	/** This boundary control for persistence operations **/

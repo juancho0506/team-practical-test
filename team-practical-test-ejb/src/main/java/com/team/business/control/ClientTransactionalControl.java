@@ -3,6 +3,7 @@
  */
 package com.team.business.control;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.inject.Model;
@@ -110,7 +111,8 @@ public class ClientTransactionalControl {
 	@SuppressWarnings("unchecked")
 	public List<Client> fetchAllClients() throws TeamTransactionException {
 		try {
-			return em.createNamedQuery("Client.findAll").getResultList();
+			List<Client> clients = em.createNamedQuery("Client.findAll").getResultList();
+			return (clients != null ? clients : new ArrayList<>());
 		}catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new TeamTransactionException("Error fetching all the client list", e);

@@ -3,7 +3,7 @@ function renderTemplate(ctx){
 	var source   = $("#resultsTemplate").html();
 	var template = Handlebars.compile(source);
 	$.ajax({
-		   url: ctx+'/rest/clients/list',
+		   url: ctx+'/rest/v1/clients',
 		   error: function() {
 		      $('#resultsDiv').html('<p>An error has occurred</p>');
 		   },
