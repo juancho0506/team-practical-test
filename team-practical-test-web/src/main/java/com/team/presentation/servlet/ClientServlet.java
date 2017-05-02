@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ import com.team.business.exception.TeamTransactionException;
 /**
  * Servlet implementation class to serve client http request operations.
  */
-@WebServlet(name="ClientServlet", urlPatterns={"/ClientServlet"})
+@WebServlet("/client")
 public class ClientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
@@ -25,22 +26,41 @@ public class ClientServlet extends HttpServlet {
 	@EJB
 	private IClientTransactionalBoundaryLocal clientService;
 	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	
+	
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		response.getWriter().println();
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//The request dispacher
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+		req.removeAttribute("message");
+		rd.forward(req, resp);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//The request dispacher
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
 		try {
-			//Add new client for testing purposes..
-			Client c = new Client();
-			c.setName("Client test");
-			c.setAge(10);
-			c.setAddress("Test");
-			c.setClientId(1000);
-			clientService.saveClient(c);
+			//Obtain the client data...
+			if(validateClientRequestParams(request)){
+				//Add and validate new client...
+				Client c = new Client();
+				c.setName(request.getAttribute("clientName").toString());
+				c.setAge(Integer.parseInt(request.getAttribute("clientAge").toString()));
+				c.setAddress(request.getAttribute("clientAddress").toString());
+				c.setClientId(Integer.parseInt(request.getAttribute("clientId").toString()));
+				clientService.saveClient(c);
+				request.setAttribute("message", "Client persisted successfully!");
+				
+			}else {
+				request.setAttribute("message", "Error parsing the current parameters. Make sure you fill all the fields with valid information.");
+			}
 			
 			List<Client> clientList = clientService.fetchAllClients();
 			response.getWriter().println("Client list: ");
@@ -52,19 +72,31 @@ public class ClientServlet extends HttpServlet {
 			}
 			
 			response.getWriter().println("end of list. ");
+			rd.forward(request, response);
 		} catch (TeamTransactionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			request.setAttribute("message", "Error parsing the current parameters. Make sure you fill all the fields with valid information.");
 		}
 	}
-
+	
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Validates if all the params sent to the request are valid or not null.
+	 * @param request
+	 * @return
 	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	private boolean validateClientRequestParams(HttpServletRequest request){
+		try {
+			Integer.parseInt(request.getAttribute("clientId").toString());
+			request.getAttribute("clientName").toString();
+			Integer.parseInt(request.getAttribute("clientAge").toString());
+			request.getAttribute("clientAddress").toString();
+			return true;
+			
+		} catch (NullPointerException e) {
+			return false;
+		} catch (NumberFormatException e){
+			return false;
+		}	
+		
 	}
 
 }
