@@ -11,4 +11,4 @@ int the WildflyServer
 2- Copy or add the ear file to a wildfly deployments directory. (Or just use the eclipse IDE server tools).
 3- The context deployed will be: /team-practical-test-web
 4- The part 1 the client form is at the path: /team-practical-test-web/client
-5 - The 2 part is a rest endpoint at: /team-practical-test-web/rest/v1/client GET
+5 - The 2 part is a rest endpoint at: /team-practical-test-web/rest/v1/clients GET
