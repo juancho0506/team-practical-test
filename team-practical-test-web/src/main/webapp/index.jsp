@@ -20,8 +20,6 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		
-		<!-- Handlebars -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.7/handlebars.js"></script>
 	</head>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 	      <div class="container">
@@ -54,54 +52,39 @@
 				<p class="lead">Client form. Please fill all the required fields to create a new client.</p>
 				<form id="clientForm" method="post" action="client">
 				  <div class="form-group">
-				    <input id="clientId" type="text" class="form-control" placeholder="ID">
+				    <input id="clientId" name="clientId" type="text" class="form-control" placeholder="ID">
 				  </div>
 				  <div class="form-group">
-				    <input id="clientName" type="text" class="form-control" placeholder="Full Name">
+				    <input id="clientName" name="clientName" type="text" class="form-control" placeholder="Full Name">
 				  </div>
 				  <div class="form-group">
-				    <input id="clientAge" type="text" class="form-control" placeholder="Age">
+				    <input id="clientAge" name="clientAge" type="text" class="form-control" placeholder="Age">
 				  </div>
 				  <div class="form-group">
-				    <input id="clientAddress" type="text" class="form-control" placeholder="Address">
+				    <input id="clientAddress" name="clientAddress" type="text" class="form-control" placeholder="Address">
 				  </div>
 				  <div class="form-group"> 
-				  	<button id="btnClientSave" type="submit" class="btn btn-default">Save</button>
+				  	<button id="btnClientSave" name="btnClientSave" type="submit" class="btn btn-default">Save</button>
 				  </div>
 				</form>
 	    </div>
 		
 		<div id="resultsContainer" class="container">
-			<div>
-				<script id="resultsTemplate" type="text/x-handlebars-template">
-					{{#if error}}
-						<h2><b>{{error}}</b></h2>
-					{{else}}
-	
-					{{#each responseData.results}}
-						<div class="panel panel-default">
-	  						<div class="panel-heading">
-	    					<h3 class="panel-title">{{{clientId}}}</h3>
-	  					</div>
-	  					<div class="panel-body">
-	    					{{{name}}}
-	  					</div>
-						</div>
-					{{/each}}
-	
-					{{/if}}
-				</script>
-			</div>
-			<div id="resultsDiv"></div>
+			<table class="table">
+				<thead>
+					<tr><th>ID</th><th>Name</th><th>Age</th><th>Address</th></tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${clientList}" var="cli">
+					<tr>
+						<td><c:out value="${cli.id}"></c:out></td>
+						<td><c:out value="${cli.name}"></c:out></td>
+						<td><c:out value="${cli.age}"></c:out></td>
+						<td><c:out value="${cli.address}"></c:out></td>
+					</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 	</body>
-	<!-- Javascript del servicio AJAX -->
-	<script src="<c:url value="/resources/js/main.js" />"></script>
-	<script type="text/javascript">
-		var ctx = '${ctx}'
-		$(document).ready(function() {
-			console.log("enters document ready");
-			renderTemplate(ctx);
-		});
-	</script>
 </html>

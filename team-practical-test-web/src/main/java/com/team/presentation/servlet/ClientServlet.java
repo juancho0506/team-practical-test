@@ -51,27 +51,27 @@ public class ClientServlet extends HttpServlet {
 			if(validateClientRequestParams(request)){
 				//Add and validate new client...
 				Client c = new Client();
-				c.setName(request.getAttribute("clientName").toString());
-				c.setAge(Integer.parseInt(request.getAttribute("clientAge").toString()));
-				c.setAddress(request.getAttribute("clientAddress").toString());
-				c.setClientId(Integer.parseInt(request.getAttribute("clientId").toString()));
+				c.setName(request.getParameter("clientName").toString());
+				c.setAge(Integer.parseInt(request.getParameter("clientAge").toString()));
+				c.setAddress(request.getParameter("clientAddress").toString());
+				c.setClientId(Integer.parseInt(request.getParameter("clientId").toString()));
 				clientService.saveClient(c);
 				request.setAttribute("message", "Client persisted successfully!");
+				
+				//Retrieve actual client list
+				request.setAttribute("clientList", clientService.fetchAllClients());
+				
 				
 			}else {
 				request.setAttribute("message", "Error parsing the current parameters. Make sure you fill all the fields with valid information.");
 			}
 			
 			List<Client> clientList = clientService.fetchAllClients();
-			response.getWriter().println("Client list: ");
-			response.getWriter().println();
 			
 			for (Client client : clientList) {
-				response.getWriter().append("* ").append(client.getName());
-				response.getWriter().println();
+				System.out.println(client.getName());
 			}
 			
-			response.getWriter().println("end of list. ");
 			rd.forward(request, response);
 		} catch (TeamTransactionException e) {
 			request.setAttribute("message", "Error parsing the current parameters. Make sure you fill all the fields with valid information.");
@@ -85,15 +85,17 @@ public class ClientServlet extends HttpServlet {
 	 */
 	private boolean validateClientRequestParams(HttpServletRequest request){
 		try {
-			Integer.parseInt(request.getAttribute("clientId").toString());
-			request.getAttribute("clientName").toString();
-			Integer.parseInt(request.getAttribute("clientAge").toString());
-			request.getAttribute("clientAddress").toString();
+			Integer.parseInt(request.getParameter("clientId").toString());
+			request.getParameter("clientName").toString();
+			Integer.parseInt(request.getParameter("clientAge").toString());
+			request.getParameter("clientAddress").toString();
 			return true;
 			
 		} catch (NullPointerException e) {
+			e.printStackTrace();
 			return false;
 		} catch (NumberFormatException e){
+			e.printStackTrace();
 			return false;
 		}	
 		
