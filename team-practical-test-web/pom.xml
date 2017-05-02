@@ -92,6 +92,13 @@
 	  <version>${jersey2.version}</version>
 	  <scope>runtime</scope>
 	</dependency>
+	
+	<!-- Memmory database h2 -->
+	<dependency>
+	    <groupId>com.h2database</groupId>
+	    <artifactId>h2</artifactId>
+	    <version>1.4.193</version>
+	</dependency>
        
     <!-- Test  -->
     <dependency>

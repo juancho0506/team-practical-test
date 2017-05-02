@@ -9,6 +9,8 @@
         <class>com.team.business.entity.Client</class>
  
         <properties>
+        	<property name="jboss.entity.manager.jndi.name" value="java:/TeamManager"/>
+         	<property name="jboss.entity.manager.factory.jndi.name" value="java:/TeamManagerFactory"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
             <property name="hibernate.max_fetch_depth" value="3" />
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
